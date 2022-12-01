@@ -36,10 +36,21 @@
                     <!-- Sidebar слева -->
                     <td valign="top" class="left-chapters">
                         <ul id="leftchapters">
+
+                            {% if country_selected == 0 %}
                             <li class="selected">All countries</li>
-                            <li><a href="#">Country 1</a></li>
-                            <li><a href="#">Country 2</a></li>
-                            <li><a href="#">Country 3</a></li>
+                            {% else %}
+                            <li><a href="{% url 'home' %}">All countries</a></li>
+                            {% endif %}
+
+                            {% for c in countries %}
+                            {% if c.pk == country_selected %}
+                            <li class="selected">{{c.name}}</li>
+                            {% else %}
+                            <li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+                            {% endif %}
+                            {% endfor %}
+
 
                         </ul>
                     </td>

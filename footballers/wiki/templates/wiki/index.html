@@ -2,14 +2,20 @@
 
 {% block content %}
 <ul class="list-articles">
-	{% for article in articles %}
-			<li><h2>{{article.title}}</h2>
-	{% autoescape on %}
-	{{article.content|linebreaks|truncatewords:50}}
-	{% endautoescape %}
-			<div class="clear"></div>
-			<p class="link-read-post"><a href="{{ article.get_absolute_url }}">Read article</a></p>
-			</li>
-	{% endfor %}
+    {% for article in articles %}
+    <li>
+        <div class="article-panel">
+            <p class="first">Country: {{article.country}}</p>
+            <p class="last">Date: {{article.time_update|date:"d-m-Y H:i:s"}}</p>
+        </div>
+
+        <h2>{{article.title}}</h2>
+        {% autoescape on %}
+        {{article.content|linebreaks|truncatewords:50}}
+        {% endautoescape %}
+        <div class="clear"></div>
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Read article</a></p>
+    </li>
+    {% endfor %}
 </ul>
 {% endblock %}

@@ -27,13 +27,14 @@ class Footballer(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name="Country")
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+    slug = models.SlugField(max_length=100, unique=True, db_index=True, verbose_name="URL")
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('country', kwargs={'country_slug': self.slug})
+        # return reverse('country', kwargs={'country_slug': self.slug})
+        return reverse('country', kwargs={'country_id': self.pk})
 
     class Meta:
         verbose_name = 'Country'

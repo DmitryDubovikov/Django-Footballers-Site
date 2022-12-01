@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render
 from .models import *
 
@@ -13,13 +13,31 @@ menu = [{'title': "About", 'url_name': 'about'},
 
 def index(request):
     articles = Footballer.objects.all()
-
+    countries = Country.objects.all()
     context = {
         'articles': articles,
+        'countries': countries,
         'menu': menu,
-        'title': 'Footballers-wiki main page'
+        'title': 'Footballers-wiki main page',
+        'country_selected': 0,
     }
     return render(request, 'wiki/index.html', context=context)
+
+
+def show_country(request, country_id):
+    articles = Footballer.objects.filter(country_id=country_id)
+
+    if len(articles) == 0:
+        raise Http404()
+
+    countries = Country.objects.all()
+    context = {
+        'articles': articles,
+        'countries': countries,
+        'menu': menu,
+        'title': 'Footballers from country',
+        'country_selected': country_id,
+    }
     return render(request, 'wiki/index.html', context=context)
 
 
@@ -45,3 +63,5 @@ def pageNotFound(request, exception):
 
 def show_article(request, article_id):
     return HttpResponse(f"article id = {article_id}")
+
+
