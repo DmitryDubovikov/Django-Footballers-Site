@@ -9,6 +9,10 @@
             <p class="last">Date: {{article.time_update|date:"d-m-Y H:i:s"}}</p>
         </div>
 
+        {% if article.photo %}
+        <p><img class="img-article-left thumb" src="{{article.photo.url}}"></p>
+        {% endif %}
+
         <h2>{{article.title}}</h2>
         {% autoescape on %}
         {{article.content|linebreaks|truncatewords:50}}
