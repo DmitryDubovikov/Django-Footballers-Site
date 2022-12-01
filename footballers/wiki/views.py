@@ -13,10 +13,8 @@ menu = [{'title': "About", 'url_name': 'about'},
 
 def index(request):
     articles = Footballer.objects.all()
-    countries = Country.objects.all()
     context = {
         'articles': articles,
-        'countries': countries,
         'menu': menu,
         'title': 'Footballers-wiki main page',
         'country_selected': 0,
@@ -30,10 +28,8 @@ def show_country(request, country_id):
     if len(articles) == 0:
         raise Http404()
 
-    countries = Country.objects.all()
     context = {
         'articles': articles,
-        'countries': countries,
         'menu': menu,
         'title': 'Footballers from country',
         'country_selected': country_id,

@@ -1,4 +1,5 @@
 {% load static %}
+{% load wiki_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +44,7 @@
                             <li><a href="{% url 'home' %}">All countries</a></li>
                             {% endif %}
 
-                            {% for c in countries %}
-                            {% if c.pk == country_selected %}
-                            <li class="selected">{{c.name}}</li>
-                            {% else %}
-                            <li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
-                            {% endif %}
-                            {% endfor %}
-
+                            {% show_countries %}
 
                         </ul>
                     </td>
