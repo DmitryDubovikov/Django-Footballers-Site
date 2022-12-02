@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from .forms import *
 from .models import *
 
 menu = [{'title': "About", 'url_name': 'about'},
@@ -48,12 +50,19 @@ def show_article(request, article_slug):
     return render(request, 'wiki/article.html', context=context)
 
 
+def add_article(request):
+    if request.method == 'POST':
+        form = AddArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = AddArticleForm()
+    return render(request, 'wiki/add_article.html', {'form': form, 'menu': menu, 'title': 'Add article'})
+
+
 def about(request):
     return render(request, 'wiki/about.html', {'menu': menu, 'title': 'Footballers-wiki about page'})
-
-
-def add_article(request):
-    return HttpResponse("Add article")
 
 
 def contact(request):
@@ -66,6 +75,3 @@ def login(request):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>pageNotFound</h1>')
-
-
-
