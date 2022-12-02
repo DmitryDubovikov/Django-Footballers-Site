@@ -10,12 +10,14 @@ class FootballerAdmin(admin.ModelAdmin):
     search_fields = ('name', 'content')
     list_editable = ('published',)
     list_filter = ('published', 'created_at')
+    prepopulated_fields = {'slug': ('name',)}
 
 
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
     search_fields = ('name',)
+    prepopulated_fields = {'slug': ('name', )}
 
 
 admin.site.register(Footballer, FootballerAdmin)

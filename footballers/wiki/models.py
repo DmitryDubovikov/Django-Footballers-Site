@@ -16,8 +16,8 @@ class Footballer(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        # return reverse('article', kwargs={'article_slug': self.slug})
-        return reverse('article', kwargs={'article_id': self.pk})
+        return reverse('article', kwargs={'article_slug': self.slug})
+        # return reverse('article', kwargs={'article_id': self.pk})
 
     class Meta:
         verbose_name = 'Football player'

@@ -1,7 +1,8 @@
 {% for country in countries %}
 {% if country.pk == country_selected %}
-<li class="selected">{{country.name}}</li>
+
+<li class="selected">{{country.name}} </li>
 {% else %}
-<li><a href="{{ country.get_absolute_url }}">{{country.name}}</a></li>
+<li><a href="{{ country.get_absolute_url }}">{{country.name}}</a> </li>
 {% endif %}
 {% endfor %}

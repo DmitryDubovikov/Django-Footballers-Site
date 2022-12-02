@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 
 menu = [{'title': "About", 'url_name': 'about'},
@@ -37,6 +37,17 @@ def show_country(request, country_id):
     return render(request, 'wiki/index.html', context=context)
 
 
+def show_article(request, article_slug):
+    article = get_object_or_404(Footballer, slug=article_slug)
+    context = {
+        'article': article,
+        'menu': menu,
+        'name': article.name,
+        'country_selected': article.country_id,
+    }
+    return render(request, 'wiki/article.html', context=context)
+
+
 def about(request):
     return render(request, 'wiki/about.html', {'menu': menu, 'title': 'Footballers-wiki about page'})
 
@@ -56,8 +67,5 @@ def login(request):
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>pageNotFound</h1>')
 
-
-def show_article(request, article_id):
-    return HttpResponse(f"article id = {article_id}")
 
 
