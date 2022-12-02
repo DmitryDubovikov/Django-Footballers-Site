@@ -13,7 +13,7 @@
         <p><img class="img-article-left thumb" src="{{article.photo.url}}"></p>
         {% endif %}
 
-        <h2>{{article.title}}</h2>
+        <h2>{{article.name}}</h2>
         {% autoescape on %}
         {{article.content|linebreaks|truncatewords:100}}
         {% endautoescape %}

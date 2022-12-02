@@ -10,6 +10,8 @@ menu = [{'title': "About", 'url_name': 'about'},
 
 
 class DataMixin:
+    paginate_by = 3
+
     def get_user_context(self, **kwargs):
         context = kwargs
         countries = Country.objects.annotate(Count('footballer'))
@@ -18,7 +20,6 @@ class DataMixin:
         user_menu = menu.copy()
         if not self.request.user.is_authenticated:
             user_menu.pop(1)  # pop add_article
-
         context['menu'] = user_menu
 
         context['countries'] = countries
