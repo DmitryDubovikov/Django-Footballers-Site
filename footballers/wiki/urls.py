@@ -2,11 +2,11 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', index, name='home'),
+    path('', WikiHome.as_view(), name='home'),
     path('about', about, name='about'),
-    path('add_article/', add_article, name='add_article'),
+    path('add_article/', AddArticle.as_view(), name='add_article'),
     path('contact/', contact, name='contact'),
     path('login/', login, name='login'),
-    path('article/<slug:article_slug>/', show_article, name='article'),
-    path('country/<int:country_id>/', show_country, name='country'),
+    path('article/<slug:article_slug>/', ShowArticle.as_view(), name='article'),
+    path('country/<slug:country_slug>/', WikiCountry.as_view(), name='country'),
 ]
