@@ -1,10 +1,8 @@
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
-from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import *
@@ -31,7 +29,7 @@ class WikiHome(DataMixin, ListView):
         return dict(list(context.items()) + list(mixin_context.items()))
 
     def get_queryset(self):
-        return Footballer.objects.filter(published=True)
+        return Footballer.objects.filter(published=True).select_related('country')
 
 
 class WikiCountry(DataMixin, ListView):
@@ -41,12 +39,13 @@ class WikiCountry(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Footballer.objects.filter(country__slug=self.kwargs['country_slug'], published=True)
+        return Footballer.objects.filter(country__slug=self.kwargs['country_slug'], published=True).select_related(
+            'country')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        mixin_context = self.get_user_context(title='Country - ' + str(context['articles'][0].country),
-                                              country_selected=context['articles'][0].country_id)
+        country = Country.objects.get(slug=self.kwargs['country_slug'])
+        mixin_context = self.get_user_context(title='Country - ' + str(country.name), country_selected=country.pk)
         return dict(list(context.items()) + list(mixin_context.items()))
 
 
@@ -95,8 +94,19 @@ def about(request):
     return render(request, 'wiki/about.html', {'menu': menu, 'title': 'Footballers-wiki about page'})
 
 
-def contact(request):
-    return HttpResponse("Contact")
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'wiki/contact.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mixin_context = self.get_user_context(title="Contact us")
+        return dict(list(context.items()) + list(mixin_context.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
 
 
 class LoginUser(DataMixin, LoginView):
@@ -115,5 +125,3 @@ class LoginUser(DataMixin, LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
-
-
